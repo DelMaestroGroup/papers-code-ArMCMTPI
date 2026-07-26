@@ -38,5 +38,5 @@ This work was performed with support from the U.S. Department of Energy, Office 
 #### Figure 10: GP comparisons 
 <img src="figures/GPComparisons.svg" width="400px">
 
-This figure is relesed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and can be freely copied, redistributed and remixed.
+This figure is released under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) and can be freely copied, redistributed and remixed.
 
