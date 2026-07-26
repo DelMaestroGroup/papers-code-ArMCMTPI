@@ -25,7 +25,7 @@ The data in this project was generated via LAMMPS. Processed data is included in
 
 
 ### Support
-This work was performed with support from the U.S. Department of Energy, Office of Science, Office of Basic Energy Sciences, under Award Number DE-SC0024333.
+This work was performed with support from the U.S. Department of Energy, Office of Science, Office of Basic Energy Sciences, under Award Number DE-SC0024333.  Nathan S. Nichols was supported by the Office of Science, U.S. Department of Energy, under contract DE-AC02-06CH11357.
 
 <img width="400px" src="https://science.osti.gov/assets/img/doe-logos/logo.png">
 
