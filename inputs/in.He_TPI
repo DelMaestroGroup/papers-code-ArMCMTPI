@@ -1,0 +1,79 @@
+log             log.He_TPI
+units           real
+atom_style      atomic
+boundary        f f p
+
+read_data       Data_MCM_Ar_frozen_4K.data extra/atom/types 1
+mass 7 4.002602
+
+group framework type 1 2 3 4 5
+group argas     type 6
+group host      type 1 2 3 4 5 6
+
+pair_style      lj/cut 20.00
+pair_modify     tail no mix arithmetic
+
+pair_coeff 1 1 0.0      0.0
+pair_coeff 2 2 0.367591 2.708
+pair_coeff 3 3 0.118069 3.905
+pair_coeff 4 4 0.238528 3.070
+pair_coeff 5 5 0.0      0.0
+pair_coeff 6 6 0.238066 3.405
+pair_coeff 7 7 0.02166052469 2.640
+
+neighbor     2.0 bin
+neigh_modify every 1 delay 0 check yes
+neigh_modify exclude group framework framework
+
+variable x0 equal 42.996
+variable y0 equal 39.413
+variable zmid equal 0.5*(zlo+zhi)
+
+create_atoms 7 single ${x0} ${y0} ${zmid}
+group probe type 7
+
+compute PE probe group/group host
+thermo_style custom step pe etotal temp c_PE
+thermo_modify flush yes
+thermo 1
+
+variable pi equal 3.1415926535
+variable rmax equal 20.0
+variable nr   equal 200
+variable ntheta equal 144
+variable nz     equal 50
+variable kcal2K equal 503.217
+variable iz     equal ZVAL
+
+print "#x(A) y(A) z(A) U_K" file data_z${iz}_xyz.dat
+print "#r(A) theta(rad) z(A) U_K" file data_z${iz}_rtz.dat
+
+variable ir loop ${nr}
+label loop_ir
+  variable r equal ${rmax}*(${ir}-1)/(${nr}-1)
+
+  variable it loop ${ntheta}
+  label loop_it
+    variable theta equal 2.0*${pi}*(1.0*${it}-1.0)/${ntheta}
+    variable rcos  equal ${r}*cos(${theta})
+    variable rsin  equal ${r}*sin(${theta})
+    variable x equal ${x0}+${rcos}
+    variable y equal ${y0}+${rsin}
+
+    variable z equal zlo+lz*(1.0*${iz}-0.5)/${nz}
+
+    set group probe x ${x} y ${y} z ${z}
+    run 0 post no
+
+    variable Uk equal c_PE*${kcal2K}
+    print "${x} ${y} ${z} ${Uk}" append data_z${iz}_xyz.dat
+    print "${r} ${theta} ${z} ${Uk}" append data_z${iz}_rtz.dat
+
+  next it
+  jump SELF loop_it
+
+  print "" append data_z${iz}_xyz.dat
+
+next ir
+jump SELF loop_ir
+
