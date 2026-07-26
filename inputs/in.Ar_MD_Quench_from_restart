@@ -1,0 +1,137 @@
+# MD relaxation of Ar in frozen MCM pore (continue from restart)
+# Workflow:
+# 1) Equilibrate at 90 K
+# 2) Quench to 4 K
+# 4) Minimize -> save frozen config for He TPI
+
+#Chemical potential and GCMC snapshot step number are set through the bash file
+
+# ----- Variables ----- #
+variable muStr  string MUVAL
+variable snapStr string SNAPVAL
+variable T      equal 90.0
+variable Tcold  equal 4.0
+variable dt     equal 1.0
+variable damp   equal 100.0
+
+# Running for these steps with dt = 1 fs
+variable n_settle equal 20000
+variable n_prod90 equal 1000000    # 1.0 ns at 90 K
+variable n_quench equal 200000     # 0.2 ns quench
+variable n_hold4  equal 100000     # 0.1 ns hold at 4 K
+
+# ----- System ----- #
+units       real
+dimension   3
+atom_style  atomic
+boundary    f f p
+
+read_restart restart_mu${muStr}_${snapStr}
+
+group framework type 1 2 3 4 5
+group argas     type 6
+
+compute  TAr argas temp
+thermo_modify temp TAr
+
+# ----- Neighbor settings ----- #
+neighbor    2.0 bin
+neigh_modify every 2 delay 10 check yes
+neigh_modify exclude group framework framework
+
+# ----- Freeze framework ----- #
+velocity framework set 0.0 0.0 0.0
+fix freeze framework setforce 0.0 0.0 0.0
+
+# ----- Monitor Ar inside pore ----- #
+variable x0 equal 42.996
+variable y0 equal 39.413
+variable RpMon equal 22.5
+region poreMon cylinder z ${x0} ${y0} ${RpMon} EDGE EDGE units box
+group inPore dynamic argas region poreMon every 200
+variable NinPore equal count(inPore)
+
+# ----- Ar energy diagnostics ----- #
+compute peAr_atom argas pe/atom
+compute keAr_atom argas ke/atom
+compute PE_Ar argas reduce sum c_peAr_atom
+compute KE_Ar argas reduce sum c_keAr_atom
+
+thermo      200
+thermo_style custom step c_TAr v_NinPore c_PE_Ar c_KE_Ar pe ke etotal press atoms
+
+# Measuring average potential energy at 90K: 
+fix PEavg all ave/time 200 50 10000 c_PE_Ar file PE_Ar_runningavg_90K.dat
+
+# ----- minimization ----- #
+min_style cg
+minimize 1.0e-6 1.0e-8 200 2000
+
+timestep ${dt}
+reset_timestep 0
+
+# ----- Settling down dynamics ----- #
+fix lim argas nve/limit 0.02
+run ${n_settle}
+unfix lim
+
+# ==========================================================
+#                   90 K PRODUCTION
+# ==========================================================
+
+fix therm argas nvt temp ${T} ${T} ${damp}
+fix_modify therm temp TAr
+
+dump dAll all custom 10000 MD_MCM_Ar_90K.lammpstrj id type x y z
+dump_modify dAll sort id
+dump_modify dAll element Si O Si O H Ar
+
+dump dAr argas custom 5000 Ar_MD_90K.lammpstrj id type x y z
+dump_modify dAr sort id
+
+run ${n_prod90}
+
+# Save equilibrated 90 K configuration
+write_data Data_MCM_Ar_MD_90K.data nocoeff
+
+# Clean 90 K stage
+unfix therm
+unfix PEavg
+undump dAll
+undump dAr
+
+# ==========================================================
+#                   QUENCH TO 4 K
+# ==========================================================
+
+# Dump trajectory during quench/4K stage
+dump d4K all custom 10000 MD_MCM_Ar_4K.lammpstrj id type x y z
+dump_modify d4K sort id
+dump_modify d4K element Si O Si O H Ar
+
+fix cool argas nvt temp ${T} ${Tcold} ${damp}
+fix_modify cool temp TAr
+run ${n_quench}
+unfix cool
+
+fix hold4 argas nvt temp ${Tcold} ${Tcold} ${damp}
+fix_modify hold4 temp TAr
+run ${n_hold4}
+unfix hold4
+
+# final minimization (true frozen host)
+min_style cg
+minimize 1.0e-6 1.0e-8 200 5000
+
+# Writing frozen configuration for He TPI
+write_data Data_MCM_Ar_frozen_4K.data nocoeff
+
+# Dump frozen snapshot for OVITO
+dump dFrozen all custom 1 MD_MCM_Ar_frozen_4K.lammpstrj id type x y z
+dump_modify dFrozen sort id
+dump_modify dFrozen element Si O Si O H Ar
+run 0
+
+undump dFrozen
+undump d4K
+

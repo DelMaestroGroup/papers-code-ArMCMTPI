@@ -1,0 +1,127 @@
+#Chemical potential and random seed are set through the bash file
+# ----- Variables ----- #
+variable muval  equal MUVAL             # in kJ/mol
+variable mu     equal ${muval}*0.239005736      # in kcal/mol
+variable seed   equal SEEDVAL
+variable muStr  string MUVAL
+
+variable x0 equal 42.996                # x-position of the center
+variable y0 equal 39.413                # y-position of the center
+variable Rp equal 20.000                # radius of the pore
+variable T      equal 90.00             # in K
+
+# ----- for Run control ----- #
+variable Nequil equal 200000
+variable Nprod  equal 800000
+
+variable thermoN    equal 2500
+variable dumpEvery  equal 5000          # snapshots for MC averaging
+variable sampleEvery    equal 5000          # one sample per dump (for consistency)
+                            # i.e. sampling every 2000 step
+#variable nSamples    equal 200                 # samples per block
+# => one block length = sampleEvery*nSamples = 40000 steps
+# total blocks = Nprod / 40000 (must be integer-ish)
+
+# ----- Physical System ----- #
+units       real
+dimension   3
+atom_style  atomic
+boundary    f f p
+
+# ----- lj Params (in real units) ----- #
+pair_style  lj/cut 8.55             # cutoff rc=8.55 : V = V(r) - V(r_c)
+pair_modify mix arithmetic              # uses LB mixing inside LAMMPS
+
+read_data       Data_MCM_2x1x5.data extra/atom/types 1  # reading MCM data from file and reserving
+                                                        # additional space for one more atom type
+mass    6 39.948                                        # Argon (g/mol), id=6
+
+group   framework type 1 2 3 4 5                        # group id=1-5 as one framework
+group   argas type 6                                    # required for gcmc (a target group)
+
+#define pore region and structure
+region  MCMpore cylinder z ${x0} ${y0} ${Rp} -42.996 64.494 units box
+
+# MCM-Framework pair coeffs
+pair_coeff 1 1 0.0  0.0
+pair_coeff 2 2 0.367591 2.708
+pair_coeff 3 3 0.118069 3.905
+pair_coeff 4 4 0.238528 3.070
+pair_coeff 5 5 0.0  0.0
+
+# Argon pair coeff
+pair_coeff 6 6 0.238066 3.405
+
+neighbor    2.0 bin                 # keep track of neighbors upto r_c + 2.0
+neigh_modify every 100 delay 0 check yes            # rebuild neighbor list if atoms moved more
+                                                        # than half of the skin distance
+neigh_modify exclude group framework framework
+# ----- Freezing the framework ----- #
+velocity    framework set 0.0 0.0 0.0
+fix     freeze framework setforce 0.0 0.0 0.0
+
+reset_timestep  0
+
+# ----- performing GCMC ----- #
+variable Ngap    equal 20
+variable Xgrow   equal 100
+variable Mgrow   equal 50
+variable dispG   equal 1.0
+
+# N=10 steps between calls; X=100 exchanges; M=100 translations; displace=1.0 Angstrom
+#fix mygcmc argas gcmc 10 100 100 6 ${seed} ${T} ${mu} 1.0 region MCMpore
+fix mygcmc argas gcmc ${Ngap} ${Xgrow} ${Mgrow} 6 ${seed} ${T} ${mu} ${dispG} region MCMpore
+
+# ----- defining Observables ----- #
+variable NAr    equal count(argas)          # counting total no. of Ar atoms
+variable NAr2   equal v_NAr*v_NAr           # getting N*N
+
+thermo ${thermoN}
+thermo_style custom step pe atoms v_NAr f_mygcmc[1] f_mygcmc[2] f_mygcmc[3] f_mygcmc[4]
+thermo_modify flush yes
+
+# ----- Reaching equilibriation ----- #
+#variable istep equal step
+#fix fPrint all print ${thermoN} "step=${istep} NAr=${NAr}" screen yes
+
+restart 200000 restart_mu${muStr}_*         # Restarts (if job times out)
+run ${Nequil}
+
+unfix mygcmc
+# ----- Producing outputs for observation ----- #
+variable NgapP   equal 20
+variable Xprod   equal 50
+variable Mprod   equal 100
+variable dispP   equal 1.0
+
+fix mygcmc argas gcmc ${NgapP} ${Xprod} ${Mprod} 6 ${seed} ${T} ${mu} ${dispP} region MCMpore
+
+# Time series of N_{Ar} and N_{Ar}^2 sampled every sampleEvery
+fix fN argas ave/time 1 1 ${sampleEvery} v_NAr v_NAr2 file Nstats_mu${muStr}.dat
+
+# Dumps for analysis: radial density, Sq, pair corr., etc.
+# (i) For OVITO: dumping all atoms
+dump dAll all custom ${dumpEvery} MCM_Ar_mu${muStr}.lammpstrj id type x y z
+dump_modify dAll sort id
+dump_modify dAll element Si O Si O H Ar
+
+# (ii) dumping Ar only
+dump dAr argas custom ${dumpEvery} Ar_mu${muStr}.lammpstrj id type x y z
+dump_modify dAr sort id
+
+run ${Nprod}
+
+write_data Data_MCM_Ar_final_mu${muStr}.data nocoeff
+
+# ----- Clean up ----- #
+unfix fN
+undump dAll
+undump dAr
+unfix mygcmc
+
+# ----- Prodcution runs ----- #
+# Radial density rho(r) in cylinder from central axis (x0,y0); delta_r=0.25 Angstrom
+# --- Radial density profile rho(r) around axis (x0,y0) ---
+#variable dx atom (x-${x0})
+#variable dy atom (y-${y0})
+#variable rr atom sqrt(v_dx*v_dx+v_dy*v_dy)
