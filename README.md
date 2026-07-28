@@ -32,9 +32,12 @@ This work was performed with support from the U.S. Department of Energy, Office 
 
 ### Figures
 
-#### Figure 9: Disorder Analysis 
-<img src="figures/disorder.svg" width="400px">
+#### Figure 10: Z disorder 
+<img src="figures/zdisorder.svg" width="400px">
 
-#### Figure 10: GP comparisons 
-<img src="figures/GPComparisons.svg" width="400px">
+#### Figure 10: Disorder Analysis 
+<img src="figures/DisorderVisualisation.svg" width="400px">
+
+#### Figure 11: GP comparisons 
+<img src="figures/GPParity.svg" width="400px">
 
