@@ -2,23 +2,18 @@
 [![DOI](https://zenodo.org/badge/XXXXXXX.svg)](https://doi.org/XX.XXXX/zenodo.XXXXXXXX)
 
 
-# Microscopic Confinement Potential for Helium in Argon Preplated MCM-41 Nanopores
+# Interface Engineering of Helium Confinement in Argon-Preplated MCM-41 Nanopores
 
 Rahul Soni, Nathan S. Nichols, Sutirtha Paul, Garfield Warren, Paul Sokol and Adrian Del Maestro
 
 [arXiv:XXXX.XXXX](https://arxiv.org/abs/XXXX.XXXX)
 
 ### Abstract
-Motivated by recent efforts to realize low-dimensional superfluid helium in rare-gas-preplated nanoporous media, we develop a microscopic approach for constructing 
-the effective confinement potential inside MCM-41 nanopores. Focusing on monolayer argon preplating of MCM-41, we combine grand canonical Monte Carlo adsorption simulations,
-molecular dynamics, and comparison with experimental observables to resolve the pore environment at the atomic scale. Helium test-particle insertion calculations show that 
-the argon monolayer screens the strongly corrugated silica surface and shifts the helium potential minimum to an annular region inside the pore. The resulting confinement 
-is dominated by a smooth radial potential that can be represented by an effective cylindrical model, while residual angular corrugation from the atomistic preplated layer 
-can be modeled via a Gaussian process surrogate model. The resulting atomistic confinement potential can be used as input for further quantum many-body studies of 
-low-dimensional superfluid helium.
+Atomic-scale modification of mesopore interfaces provides a route to tune the confinement experienced by adsorbed fluids, but how a specific interface preparation translates into the resulting microscopic confinement potential remains unclear. Here, we show that preplating MCM-41 with an argon monolayer modifies the effective pore interface by occupying strongly attractive regions of the heterogeneous silica surface and screening its atomic-scale corrugation. Grand-canonical Monte Carlo simulations of argon adsorption, low-temperature molecular dynamics, and helium test-particle insertion are combined with adsorption isotherms and neutron-scattering measurements to characterize the preplated pore at the atomic scale. Helium test-particle insertion calculations show that the modified interface shifts the helium adsorption minimum to an annular region inside the pore and produces a confinement landscape dominated by a smooth radial component.  The resulting radial confinement potential can be described by a continuum cylindrical model, providing microscopic support for the effective potential used in earlier quantum Monte Carlo studies. Residual corrugation persists over multiple spatial scales and is accurately captured by a Gaussian process surrogate. These results demonstrate how atomic preplating can tailor nanopore confinement and provide an experimentally constrained microscopic potential for predictive studies of confined quantum fluids.
+
 
 ### Description
-This repository includes links, code, scripts, and data to generate the figures in a paper.
+This repository includes links, code, scripts, and data to generate the figures in a paper.  
 
 ### Requirements
 The data in this project was generated via LAMMPS. Processed data is included in the [data](https://github.com/DelMaestroGroup/papers-code-ArMCMTPI/tree/main/data) directory.
