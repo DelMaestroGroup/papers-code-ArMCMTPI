@@ -1,5 +1,5 @@
 [![Paper](https://img.shields.io/badge/paper-arXiv%XXXX.svg)](https://arxiv.org/abs/XXXX.XXXXX)
-[![DOI](https://zenodo.org/badge/XXXXXXX.svg)](https://doi.org/XX.XXXX/zenodo.XXXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21814518.svg)](https://doi.org/10.5281/zenodo.21814518)
 
 
 # Interface Engineering of Helium Confinement in Argon-Preplated MCM-41 Nanopores
