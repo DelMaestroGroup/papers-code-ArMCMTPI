@@ -13,7 +13,7 @@ Atomic-scale modification of mesopore interfaces provides a route to tune the co
 
 
 ### Description
-This repository includes links, code, scripts, and data to generate the figures in a paper.  
+This repository includes data files, scripts, codes and analysis used to generate the figures in this paper.
 
 ### Requirements
 The data in this project was generated via LAMMPS. Processed data is included in the [data](https://github.com/DelMaestroGroup/papers-code-ArMCMTPI/tree/main/data) directory.
@@ -27,12 +27,45 @@ This work was performed with support from the U.S. Department of Energy, Office 
 
 ### Figures
 
+#### Figure 1: Sturture of the $2\times 1\times 5$ MCM-41 pore
+<img src="figures/lammps/MCM-41_poreview.png" width="400px">
+
+#### Figure 2: Adsorption uptake of argon inside MCM-41 pore as a function of relative pressure $P/P_{0}$ 
+<img src="figures/lammps/Avg_uptake_vs_PoverP0.png" width="400px">
+
+#### Figure 3: Radial density profiles for selected chemical potentials
+<img src="figures/lammps/Combined_radial_density.png" width="400px">
+
+#### Figure 4: Ar-Ar pair correlation function of monolayer
+<img src="figures/lammps/PC_vs_r.png" width="400px">
+
+#### Figure 5: Debye powder averaged structure factor of Ar-Ar + Ar-MCM
+<img src="figures/lammps/Sq_tot_vs_q_symmNorm.png" width="400px">
+
+#### Figure 6: Top view of Ar inside MCM-41 at $T=90$ K and $T=4$ K
+<img src="figures/lammps/Combined_MD_GCMC_Ar_preplated_MCM.png" width="600px">
+
+#### Figure 7: Helium confinement potential heatmap
+<img src="figures/lammps/TPI_heatmap_at_4K.png" width="400px">
+
+#### Figure 8: Cylindrically averaged helium confinement potential
+<img src="figures/lammps/MCM_and_ArMCM_TPI_with_fit_at_4K.png" width="400px">
+
+#### Figure 9: Screeing factor
+<img src="figures/lammps/Screening_plot.png" width="400px">
+
 #### Figure 10: Z disorder 
 <img src="figures/zdisorder.svg" width="400px">
 
-#### Figure 10: Disorder Analysis 
+#### Figure 11: Disorder Analysis 
 <img src="figures/DisorderVisualisation.svg" width="400px">
 
-#### Figure 11: GP comparisons 
+#### Figure 12: GP comparisons 
 <img src="figures/GPParity.svg" width="400px">
+
+#### Figure 13: First and second Ar layer occupancies
+<img src="figures/lammps/N1_N2_vs_mu_with_fits.png" width="400px">
+
+#### Figure 14: First order derivatives of the first and second Ar layer occupancies
+<img src="figures/lammps/dN1_dN2_vs_mu.png" width="400px">
 
