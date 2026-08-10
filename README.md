@@ -55,13 +55,13 @@ This work was performed with support from the U.S. Department of Energy, Office 
 <img src="figures/lammps/Screening_plot.png" width="400px">
 
 #### Figure 10: Z disorder 
-<img src="figures/zdisorder.svg" width="400px">
+<img src="figures/zdisorder.png" width="400px">
 
 #### Figure 11: Disorder Analysis 
-<img src="figures/DisorderVisualisation.svg" width="400px">
+<img src="figures/DisorderVisualisation.png" width="400px">
 
 #### Figure 12: GP comparisons 
-<img src="figures/GPParity.svg" width="400px">
+<img src="figures/GPParity.png" width="400px">
 
 #### Figure 13: First and second Ar layer occupancies
 <img src="figures/lammps/N1_N2_vs_mu_with_fits.png" width="400px">
