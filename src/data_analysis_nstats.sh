@@ -1,4 +1,4 @@
-Temp=90			#in K
+Temp=90			
 start_step=200000
 end_step=1000000
 
@@ -6,6 +6,8 @@ mass_MCM=6.541641e-19	#in grams
 mu0=-9.85		#kJ/mol
 R=0.008314462618	#kJ/mol/K
 NA=6.02214076e23	#Avogadro number
+
+cd data/lammps/Ar_nstats/
 
 for seed in 1 2 3 4 5
 do
@@ -36,3 +38,8 @@ do
 		mu_val=$(echo "${mu_val}-0.05"| bc -l)
 	done
 done
+
+cp ../../../src/get_nstats.py
+python3 get_nstats.py
+
+cd ../../../

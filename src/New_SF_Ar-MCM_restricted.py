@@ -40,7 +40,7 @@ Lz= 107.49 #Pore length [else check via Lz=(zhi-zlo)]
 #Defining momentum grid: (in Angstrom^{-1}):
 Qmin= 1.00
 Qmax= 7.00
-dQ  = 1.0 #(for testing use 1.0)
+dQ  = 0.01 #(for testing use 1.0)
 
 #Parsing the Ar-Ar LAMMPS dump file:
 def parse_lammps_frames(path):

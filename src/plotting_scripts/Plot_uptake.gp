@@ -23,7 +23,7 @@ set ylabel '\fontsize{8}{8} Uptake [mmol/g]' offset 5.2,0
 set label 1 '\scalebox{0.7}{uptake=$\frac{\langle N \rangle/N_A}{m_\mathrm{\scalebox{0.5}{pore}}}$}' at 0.05,27
 #set label 2 '\scalebox{0.7}{$P_0=2.6$ bar}' at 0.05,24
 
-plot "Navg_uptake_seedavg.dat" u ($2/2.6):5:6 w yerrorbars lw 2 ps 0.6 pt 6 lc rgb 'red' ti '\scalebox{0.7}{GCMC}',"Navg_uptake_seedavg.dat" u ($2/2.6):5 w l lw 4 lc rgb 'red' noti,"../Nexp_data_MCM-41_Ar.txt" u 2:1 w p ps 0.9 pt 7 lc rgb 'dark-green' ti '\scalebox{0.7}{Experiment}'
+plot "../../data/lammps/Ar_nstats/Navg_uptake_seedavg.dat" u ($2/2.6):5:6 w yerrorbars lw 2 ps 0.6 pt 6 lc rgb 'red' ti '\scalebox{0.7}{GCMC}',"" u ($2/2.6):5 w l lw 4 lc rgb 'red' noti,"../../data/lammps/Nexp_data_MCM-41_Ar.txt" u 2:1 w p ps 0.9 pt 7 lc rgb 'dark-green' ti '\scalebox{0.7}{Experiment}'
 
 
 

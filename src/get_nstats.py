@@ -22,6 +22,4 @@ uptake_se = np.std(uptake_all, axis=1, ddof=1) / np.sqrt(nseeds)
 avg_output = np.column_stack([mu_P,Nmean,Nse,uptake_mean,uptake_se])
 
 header_avg = "mu P_by_P0 Nmean Nse uptake_mean uptake_se"
-
 np.savetxt("Navg_uptake_seedavg.dat",avg_output,header=header_avg,fmt="%.10e")
-print("Done!")
