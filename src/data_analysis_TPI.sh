@@ -1,24 +1,25 @@
-cd data/lammps/Ar_dumpfiles/
+cd data/lammps/TPI_data/
 
+#RMS calculation for bareMCM:
+cp  ../../../RMS_corr_bareMCM.py .
+python3 RMS_corr_bareMCM.py
 
+#generating TPI heatmap and U_rad data:
+cd multisnapseed_data
+cp ../../../../src/average_U_vs_r.py .
+cp ../../../../src/average_Uxy_pm3d.py .
+cp ../../../../src/RMS_corr_ArMCM.py .
 
-for seed in 1 2 3 4 5
-do
-	cd Seed_${seed}/
+python3 average_U_vs_r.py
+python3 average_Uxy_pm3d.py
+python3 RMS_corr_ArMCM.py
 
-	cp ../../../../src/compute_radial_density.py .
-	python3 compute_radial_density.py
+#generating Screening data:
+cd RMS_corrugation_ArMCM
+cp ../../../../../src/calculate_screening_factor.py .
+python3 calculate_screening_factor.py
 
-	cd ../
-done
-
-cp ../../../src/get_rhorad_multiseed.py .
-python3 get_rhorad_multiseed.py
-
-cp ../../../src/gr_cyl_multiseed.py .
-python3 gr_cyl_multiseed.py
-
-cp ../../../src/analyze_monolayer_from_radial.sh .
-bash analyze_monolayer_from_radial.sh
+cd ../../
 
 cd ../../../
+
