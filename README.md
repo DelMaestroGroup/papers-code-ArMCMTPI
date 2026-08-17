@@ -16,7 +16,94 @@ Atomic-scale modification of mesopore interfaces provides a route to tune the co
 This repository includes data files, scripts, codes and analysis used to generate the figures in this paper.
 
 ### Data
-The data in this project was generated via LAMMPS. Processed data is included in the [data](https://github.com/DelMaestroGroup/papers-code-ArMCMTPI/tree/main/data) directory. The raw data can be downloaded from [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21981120.svg)](https://doi.org/10.5281/zenodo.21981120).
+The data in this project was generated via LAMMPS. Since several LAMMPS trajectory/dumps and TPI datasets are too large for a convenient distribution through GitHub, the data associated with this project are divided between **GitHub** and **Zenodo**.
+
+#### Data included in GitHub
+This repository contains the smaller datasets and processed data files in the [data](https://github.com/DelMaestroGroup/papers-code-ArMCMTPI/tree/main/data) directory, required for the analysis and figures. The included files are under these subdirectories:
+```text
+data/
+data/lammps/Ar_nstats/
+data/lammps/Str_factor/
+```
+
+as well as the MCM structure and selected processed configurations for visualization via OVITO:
+
+```text
+data/lammps/Data_MCM_2x1x5.data
+data/lammps/Data_MCM_Ar_MD_90K.data
+data/lammps/Data_MCM_Ar_frozen_4K.data
+data/lammps/Nexp_data_MCM-41_Ar.txt
+```
+
+#### Data stored on Zenodo
+The following two large subdirectories are stored on Zenodo:
+
+```text
+Ar_dumpfiles/
+TPI_data/
+```
+
+`Ar_dumpfiles/` contains the GCMC Ar trajectory/dump files for the five independent simulation seeds and chemical-potential scan.
+
+`TPI_data/` contains the data generated from the helium test-particle insertion calculations, including the multiple frozen Ar+MCM configurations used for averaging.
+
+The datasets can be downloaded through [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21981120.svg)](https://doi.org/10.5281/zenodo.21981120).
+
+After downloading the datasets from Zenodo place the two subdirectories under `data/lammps/`, so that the repo has the following structure:
+
+```text
+data/lammps/
+-> Ar_nstats/
+-> Ar_dumpfiles/       # downloaded from Zenodo
+-> TPI_data/           # downloaded from Zenodo
+-> Str_factor/
+```
+
+### Software requirements
+
+The workflow was generated in a Linux/HPC environment and the following softwares were used to obtain the raw & processed data and figures:
+
+- Bash
+- LAMMPS (version: 29 Oct 2020)
+- NumPy and Python3
+- Gnuplot 
+- `pdftoppm` (for PDF-to-PNG conversion)
+
+
+### Obtaining raw & processed data
+Unless stated otherwise, the bash scripts in `src/` should be executed from the main directory and not from inside 'src/'
+
+For multiseed GCMC runs at 90 K do:
+```bash
+bash src/Submit_GCMC_multiseed_runs.sh
+```
+
+To collect raw GCMC data, as well as analyse and generate processed GCMC data, do the following:
+```bash
+bash src/data_collection_GCMC_multiseed.sh
+bash src/data_analysis_nstats.sh
+bash src/data_analysis_gr_rho.sh
+bash src/data_analysis_Sq.sh
+```
+
+For multiseed MD and TPI runs at 4 K do:
+```bash
+bash src/Submit_MD_multiseed_runs.sh
+bash src/Submit_TPI_multiseeed_runs.sh
+```
+
+To collect raw TPI data, as well as analyse and generate processed TPI data, do the following:
+```bash
+bash src/data_collection_TPI.sh
+bash src/data_analysis_TPI.sh
+```
+
+Once all the raw and processed data has been stored in the `data/` directory, generate all the paper figures by running the `Create_figures.sh` script inside `plotting_scripts/` subdirectory. Note that, the script should be executed from `src/plotting_scripts/` as:
+
+```bash
+bash Create_figures.sh
+```
+
 
 
 ### Support
