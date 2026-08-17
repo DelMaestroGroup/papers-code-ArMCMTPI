@@ -15,8 +15,8 @@ Atomic-scale modification of mesopore interfaces provides a route to tune the co
 ### Description
 This repository includes data files, scripts, codes and analysis used to generate the figures in this paper.
 
-### Requirements
-The data in this project was generated via LAMMPS. Processed data is included in the [data](https://github.com/DelMaestroGroup/papers-code-ArMCMTPI/tree/main/data) directory.
+### Data
+The data in this project was generated via LAMMPS. Processed data is included in the [data](https://github.com/DelMaestroGroup/papers-code-ArMCMTPI/tree/main/data) directory. The raw data can be downloaded from [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21981120.svg)](https://doi.org/10.5281/zenodo.21981120).
 
 
 ### Support
